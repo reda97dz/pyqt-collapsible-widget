@@ -1,7 +1,5 @@
 __author__ = 'Caroline Beyne'
 
-__author__ = 'Caroline Beyne'
-
 from PyQt5 import QtWidgets, QtGui, QtCore
 import sys
 from FrameLayout import FrameLayout
