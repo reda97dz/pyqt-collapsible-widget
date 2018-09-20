@@ -1,16 +1,16 @@
 __author__ = 'Caroline Beyne'
 
-from PyQt4 import QtGui, QtCore
+from PyQt5 import QtWidgets, QtCore, QtGui
 
-class FrameLayout(QtGui.QWidget):
+class FrameLayout(QtWidgets.QWidget):
     def __init__(self, parent=None, title=None):
-        QtGui.QFrame.__init__(self, parent=parent)
+        QtWidgets.QFrame.__init__(self, parent=parent)
 
         self._is_collasped = True
         self._title_frame = None
         self._content, self._content_layout = (None, None)
 
-        self._main_v_layout = QtGui.QVBoxLayout(self)
+        self._main_v_layout = QtWidgets.QVBoxLayout(self)
         self._main_v_layout.addWidget(self.initTitleFrame(title, self._is_collasped))
         self._main_v_layout.addWidget(self.initContent(self._is_collasped))
 
@@ -22,8 +22,8 @@ class FrameLayout(QtGui.QWidget):
         return self._title_frame
 
     def initContent(self, collapsed):
-        self._content = QtGui.QWidget()
-        self._content_layout = QtGui.QVBoxLayout()
+        self._content = QtWidgets.QWidget()
+        self._content_layout = QtWidgets.QVBoxLayout()
 
         self._content.setLayout(self._content_layout)
         self._content.setVisible(not collapsed)
@@ -34,7 +34,7 @@ class FrameLayout(QtGui.QWidget):
         self._content_layout.addWidget(widget)
 
     def initCollapsable(self):
-        QtCore.QObject.connect(self._title_frame, QtCore.SIGNAL('clicked()'), self.toggleCollapsed)
+        self._title_frame.clicked.connect(self.toggleCollapsed)
 
     def toggleCollapsed(self):
         self._content.setVisible(self._is_collasped)
@@ -44,15 +44,17 @@ class FrameLayout(QtGui.QWidget):
     ############################
     #           TITLE          #
     ############################
-    class TitleFrame(QtGui.QFrame):
+    class TitleFrame(QtWidgets.QFrame):
+        clicked = QtCore.pyqtSignal()
+
         def __init__(self, parent=None, title="", collapsed=False):
-            QtGui.QFrame.__init__(self, parent=parent)
+            QtWidgets.QFrame.__init__(self, parent=parent)
 
             self.setMinimumHeight(24)
             self.move(QtCore.QPoint(24, 0))
             self.setStyleSheet("border:1px solid rgb(41, 41, 41); ")
 
-            self._hlayout = QtGui.QHBoxLayout(self)
+            self._hlayout = QtWidgets.QHBoxLayout(self)
             self._hlayout.setContentsMargins(0, 0, 0, 0)
             self._hlayout.setSpacing(0)
 
@@ -69,7 +71,7 @@ class FrameLayout(QtGui.QWidget):
             return self._arrow
 
         def initTitle(self, title=None):
-            self._title = QtGui.QLabel(title)
+            self._title = QtWidgets.QLabel(title)
             self._title.setMinimumHeight(24)
             self._title.move(QtCore.QPoint(24, 0))
             self._title.setStyleSheet("border:0px")
@@ -77,7 +79,7 @@ class FrameLayout(QtGui.QWidget):
             return self._title
 
         def mousePressEvent(self, event):
-            self.emit(QtCore.SIGNAL('clicked()'))
+            self.clicked.emit()
 
             return super(FrameLayout.TitleFrame, self).mousePressEvent(event)
 
@@ -85,9 +87,9 @@ class FrameLayout(QtGui.QWidget):
     #############################
     #           ARROW           #
     #############################
-    class Arrow(QtGui.QFrame):
+    class Arrow(QtWidgets.QFrame):
         def __init__(self, parent=None, collapsed=False):
-            QtGui.QFrame.__init__(self, parent=parent)
+            QtWidgets.QFrame.__init__(self, parent=parent)
 
             self.setMaximumSize(24, 24)
 
@@ -112,3 +114,4 @@ class FrameLayout(QtGui.QWidget):
             painter.setPen(QtGui.QColor(64, 64, 64))
             painter.drawPolygon(*self._arrow)
             painter.end()
+
