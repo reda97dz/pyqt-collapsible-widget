@@ -1,4 +1,4 @@
-# PyQt Collapsable Widget
+# PyQt5 Collapsable Widget
 *A PyQt collapsable widget in the spirit of the Maya* **frameLayout** *command*
 
 ## Why ?
