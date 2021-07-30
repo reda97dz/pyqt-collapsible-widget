@@ -29,7 +29,10 @@ class FrameLayout(QtWidgets.QWidget):
         self._content.setVisible(not collapsed)
 
         return self._content
-
+    
+    def addLayout(self, layout):
+        self._content_layout.addLayout(layout)
+        
     def addWidget(self, widget):
         self._content_layout.addWidget(widget)
 
